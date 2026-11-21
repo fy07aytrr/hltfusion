@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101112">
+  <meta name="description" content="HLTFusion combines light trajectories from short exposures with a sharp reference frame. Explore matched results on fireworks and traffic scenes.">
+  <title>HLTFusion: Region-Guided Fusion for Handheld Light-Trail Photography</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./site.css">
+  <script defer src="./publication.js"></script>
+  <script defer src="./demo.js"></script>
+</head>
+<body id="top">
+  <a class="skip" href="#comparison">Skip to visual comparison</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="wordmark" href="#top" aria-label="HLTFusion home"><span class="trail-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>HLTFusion</a>
+      <nav aria-label="Page sections">
+        <a href="#comparison">Comparison</a><a href="#overview">Overview</a><a href="#method">Method</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="paper-title">
+      <img class="hero-photo" src="./assets/figures/hero.webp" alt="Synthesized long exposure of gold fireworks above an illuminated castle." fetchpriority="high">
+      <div class="hero-shade"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="rule"></span>Computational photography</p>
+          <h1 id="paper-title" aria-label="HLTFusion: Region-Guided Fusion for Handheld Light-Trail Photography"><span class="project-title">HLT<em>Fusion</em></span><span class="subtitle">Region-Guided Fusion for<br class="desktop-break"> Handheld Light-Trail Photography</span></h1>
+          <p class="authors" id="authors">Anonymous authors</p>
+          <p class="affiliations" id="affiliations" hidden></p>
+          <div class="hero-actions" id="hero-actions"><a class="primary" href="#comparison"><span class="split-icon" aria-hidden="true"></span>Explore comparison</a></div>
+        </div>
+        <p class="photo-credit"><span></span>Fireworks <b>/</b> HLTFusion output</p>
+      </div>
+    </section>
+    <section class="demo wrap" id="comparison" aria-labelledby="demo-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="demo-title">Visual comparison</h2></div>
+      <p class="intro">Choose a scene and a method for each half. The two halves meet at the center of the same frame.</p>
+      <noscript>Please enable JavaScript to use the image comparison.</noscript>
+      <div class="scene-strip" id="scenes" role="group" aria-label="Choose a scene"></div>
+      <div class="viewer" id="viewer">
+        <div class="viewer-top">
+          <div class="selected-scene"><span class="tiny-label">Selected scene</span><h3 id="scene-title">Fireworks</h3></div>
+          <div class="mode-switch" role="group" aria-label="Comparison layout">
+            <button type="button" id="split-mode" aria-pressed="true"><span class="split-icon" aria-hidden="true"></span>50/50 split</button>
+            <button type="button" id="wipe-mode" aria-pressed="false"><span class="wipe-icon" aria-hidden="true"></span>Wipe</button>
+          </div>
+        </div>
+        <div class="pickers">
+          <label><span class="side-label"><span class="side-dot"></span>Left</span><span class="select-wrap"><select id="left" aria-label="Left method"></select></span></label>
+          <label><span class="side-label"><span class="side-dot right-dot"></span>Right</span><span class="select-wrap"><select id="right" aria-label="Right method"></select></span></label>
+        </div>
+        <div class="pictures" id="pictures" aria-busy="true">
+          <div class="pane pane-left"><img id="left-image" alt="" hidden></div>
+          <div class="pane pane-right"><img id="right-image" alt="" hidden></div>
+          <div class="divider" aria-hidden="true"><span>‹ ›</span></div>
+          <input id="wipe-range" type="range" min="0" max="100" value="50" aria-label="Wipe position, percentage of left image visible" hidden>
+        </div>
+        <div class="viewer-note"><p id="view-note">Select Wipe to move the divider.</p><span id="frame-size" aria-label="Preview resolution"></span></div>
+        <p id="load-error" role="alert" hidden>These images could not be loaded. <button id="retry" type="button">Try again</button></p>
+        <p class="sr-only" role="status" id="status"></p>
+      </div>
+    </section>
+    <section class="wrap editorial" id="overview" aria-labelledby="overview-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="overview-title">Overview</h2></div>
+      <div class="prose"><p class="lede">A burst of short exposures records where the light moved. A single frame records what stood still.</p>
+        <p>Handheld light-trail photography needs both. Camera shake blurs stationary structures when frames are stacked, while diffuse brightness can hide the fine paths of moving lights. HLTFusion combines an aligned temporal aggregate with a short-exposure reference to preserve the trails and the surrounding scene.</p>
+        <p>For training, we edit temporal-maximum images from tripod videos to produce pseudo-reference targets. We screen those targets for visual quality and consistency with the source.</p>
+        <p>On 49 handheld sequences, HLTFusion averages 0.004 mean absolute RGB error against the reference in static regions, compared with 0.056 for Google-style. Table 1 of the paper measures this on a shared mask, with RGB values in [0, 1].</p></div>
+    </section>
+    <section class="wrap method" id="method" aria-labelledby="method-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="method-title">Method</h2></div>
+      <p class="intro">A shared soft mask guides generation and the final blend with the reference frame.</p>
+      <figure class="method-figure"><a href="./assets/figures/method.webp" aria-label="Open the full-size HLTFusion method diagram"><img loading="lazy" src="./assets/figures/method.webp" alt="HLTFusion pipeline, from frame alignment and temporal aggregation through region-guided generation to source-aware compositing."></a><figcaption>The aligned burst supplies light trajectories. The reference frame anchors the structure and color of the background.</figcaption></figure>
+    </section>
+    <section class="wrap editorial" id="study" aria-labelledby="study-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="study-title">User study</h2></div>
+      <div class="prose"><p>Across 24 scenes, 22 participants ranked results for consistency with the input and for overall appearance. Participants favored HLTFusion over both editors for input consistency and favored the editors for appearance.</p>
+        <table class="study-table">
+          <caption>Pairwise preference for HLTFusion (Figure 5)</caption>
+          <thead><tr><th scope="col">Compared with</th><th scope="col">Input consistency</th><th scope="col">Appearance</th></tr></thead>
+          <tbody><tr><th scope="row">GPT Image 2</th><td>77.6%</td><td>35.7%</td></tr><tr><th scope="row">FLUX.2 klein</th><td>90.8%</td><td>40.6%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap foot"><span class="wordmark"><span class="trail-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>HLTFusion</span><a href="#top">Back to top</a></div></footer>
+</body>
+</html>
