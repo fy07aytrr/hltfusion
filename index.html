@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./site.css">
   <script defer src="./publication.js"></script>
   <script defer src="./demo.js"></script>
+  <script defer src="./user-study.js"></script>
 </head>
 <body id="top">
   <a class="skip" href="#comparison">Skip to visual comparison</a>
@@ -17,7 +18,7 @@
     <div class="wrap masthead-inner">
       <a class="wordmark" href="#top" aria-label="HLTFusion home"><span class="trail-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>HLTFusion</a>
       <nav aria-label="Page sections">
-        <a href="#comparison">Comparison</a><a href="#overview">Overview</a><a href="#method">Method</a>
+        <a href="#comparison">Comparison</a><a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a>
       </nav>
     </div>
   </header>
@@ -68,23 +69,34 @@
       <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="overview-title">Overview</h2></div>
       <div class="prose"><p class="lede">A burst of short exposures records where the light moved. A single frame records what stood still.</p>
         <p>Handheld light-trail photography needs both. Camera shake blurs stationary structures when frames are stacked, while diffuse brightness can hide the fine paths of moving lights. HLTFusion combines an aligned temporal aggregate with a short-exposure reference to preserve the trails and the surrounding scene.</p>
-        <p>For training, we edit temporal-maximum images from tripod videos to produce pseudo-reference targets. We screen those targets for visual quality and consistency with the source.</p>
-        <p>On 49 handheld sequences, HLTFusion averages 0.004 mean absolute RGB error against the reference in static regions, compared with 0.056 for Google-style. Table 1 of the paper measures this on a shared mask, with RGB values in [0, 1].</p></div>
+        <p>For training, we edit temporal-maximum images from tripod videos to produce pseudo-reference targets. We screen those targets for visual quality and consistency with the source.</p></div>
     </section>
     <section class="wrap method" id="method" aria-labelledby="method-title">
       <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="method-title">Method</h2></div>
       <p class="intro">A shared soft mask guides generation and the final blend with the reference frame.</p>
       <figure class="method-figure"><a href="./assets/figures/method.webp" aria-label="Open the full-size HLTFusion method diagram"><img loading="lazy" src="./assets/figures/method.webp" alt="HLTFusion pipeline, from frame alignment and temporal aggregation through region-guided generation to source-aware compositing."></a><figcaption>The aligned burst supplies light trajectories. The reference frame anchors the structure and color of the background.</figcaption></figure>
     </section>
-    <section class="wrap editorial" id="study" aria-labelledby="study-title">
-      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="study-title">User study</h2></div>
-      <div class="prose"><p>Across 24 scenes, 22 participants ranked results for consistency with the input and for overall appearance. Participants favored HLTFusion over both editors for input consistency and favored the editors for appearance.</p>
-        <table class="study-table">
-          <caption>Pairwise preference for HLTFusion (Figure 5)</caption>
-          <thead><tr><th scope="col">Compared with</th><th scope="col">Input consistency</th><th scope="col">Appearance</th></tr></thead>
-          <tbody><tr><th scope="row">GPT Image 2</th><td>77.6%</td><td>35.7%</td></tr><tr><th scope="row">FLUX.2 klein</th><td>90.8%</td><td>40.6%</td></tr></tbody>
-        </table>
+    <section class="wrap results" id="results" aria-labelledby="results-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="results-title">Quantitative results</h2></div>
+      <p class="intro">Table 1 reports results for 301 non-handheld and 49 handheld sequences.</p>
+      <figure class="results-figure">
+        <div class="table-scroll" role="region" aria-label="Table 1. Scroll horizontally on small screens to see all columns." tabindex="0">
+          <img src="./assets/figures/table-1.webp" width="3108" height="1284" loading="lazy" alt="Table 1 compares nine methods. On handheld captures, HLTFusion ranks first on dynamic-region DeQA and static-region SourceMAE, and second on MUSIQ.">
+        </div>
+        <figcaption><a class="figure-link" href="./assets/figures/table-1.webp">Open full-size table</a></figcaption>
+      </figure>
+      <div class="region-results">
+        <div><h3>Dynamic regions</h3><p>On handheld light-trail patches, HLTFusion achieves the highest DeQA score (<strong>1.970</strong>), ahead of GPT Image 2 (1.925). It ranks second on MUSIQ with 30.13, behind GPT Image 2 (32.53).</p></div>
+        <div><h3>Static regions</h3><p>On the same handheld sequences, HLTFusion produces the lowest error relative to the short-exposure reference (SourceMAE <strong>0.004</strong>), followed by Google-style (0.056). On non-handheld captures, its SSIM (0.905) and PSNR (27.67 dB) exceed those of all five general-purpose image editors.</p></div>
       </div>
+    </section>
+    <section class="wrap results" id="study" aria-labelledby="study-title">
+      <div class="section-title"><span class="section-stroke" aria-hidden="true"></span><h2 id="study-title">User study</h2></div>
+      <p class="intro">Twenty-two participants ranked five anonymized outputs on 24 scenes for overall appearance and consistency with the input.</p>
+      <figure class="results-figure study-figure">
+        <div id="study-chart"><noscript>Pairwise preference for HLTFusion, given as appearance and input consistency: raw max-stack (70.7%, 64.7%), Google-style (82.2%, 80.4%), FLUX.2 klein (40.6%, 90.8%), and GPT Image 2 (35.7%, 77.6%).</noscript></div>
+        <figcaption>Pairwise preference from the rankings in Figure 5. Ties receive half credit and each participant has equal weight. Participants preferred HLTFusion to all four alternatives for input consistency. For appearance, they favored HLTFusion over raw max-stack and Google-style, and favored the two image editors over HLTFusion.</figcaption>
+      </figure>
     </section>
   </main>
   <footer><div class="wrap foot"><span class="wordmark"><span class="trail-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>HLTFusion</span><a href="#top">Back to top</a></div></footer>
